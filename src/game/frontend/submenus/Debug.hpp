@@ -7,5 +7,6 @@ namespace YimMenu::Submenus
 	{
 	public:
 		Debug();
+		bool AllowVeboseLogging = false;
 	};
 }

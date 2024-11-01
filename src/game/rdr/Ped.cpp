@@ -114,12 +114,74 @@ namespace YimMenu
 		PED::_SET_PED_MOTIVATION(GetHandle(), (int)state, value, 0);
 	}
 
+	bool Ped::IsMount() 
+	{
+		ENTITY_ASSERT_VALID();
+		return PED::CAN_PED_BE_MOUNTED(GetHandle());
+	}
+
 	void Ped::SetInMount(Ped mount, int seat)
 	{
+		ENTITY_ASSERT_VALID();
 		ENTITY_ASSERT_VALID();
 		ENTITY_ASSERT_CONTROL();
 		ENTITY_ASSERT_SCRIPT_CONTEXT();
 		PED::SET_PED_ONTO_MOUNT(GetHandle(), mount.GetHandle(), seat, true);
+	}
+
+	bool Ped::GetRiderOfMount(int& Rider)
+	{
+		ENTITY_ASSERT_VALID();
+		if (IsMount())
+		{
+			Rider = PED::_GET_RIDER_OF_MOUNT(GetHandle(), -1);
+			return Rider != 0;
+		}
+		return false;
+	}
+
+	// This can be called from a mount or a rider!
+	bool Ped::KickFromMount() 
+	{
+		ENTITY_ASSERT_VALID();
+		if (IsMount())
+		{
+			int Rider = 0;
+			if (GetRiderOfMount(Rider))
+			{
+				PED::_REMOVE_PED_FROM_MOUNT(Rider, 0, 0);
+				return true;
+			}
+		}
+		else if (GetMount())
+		{
+			PED::_REMOVE_PED_FROM_MOUNT(GetHandle(), 0, 0);
+			return true;
+		}
+
+		return false;
+	}
+
+	// This can be called from a mount or a rider!
+	bool Ped::SetBondingLevel(int Level) 
+	{
+		ENTITY_ASSERT_VALID();
+		if (IsMount())
+		{
+			int Rider = 0;
+			if (GetRiderOfMount(Rider))
+			{
+				PED::_SET_MOUNT_BONDING_LEVEL(Rider, 100);
+				return true;
+			}
+		}
+		else if (GetMount())
+		{
+			PED::_SET_MOUNT_BONDING_LEVEL(GetHandle(), 100);
+			return true;
+		}
+
+		return false;
 	}
 
 	rage::fvector3 Ped::GetBonePosition(int bone)

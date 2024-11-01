@@ -26,12 +26,12 @@ namespace YimMenu::Hooks
 		auto metric_name = metric->GetName();
 		if (bad_metrics.contains(metric_name))
 		{
-			LOG(INFO) << "BAD METRIC: " << metric_name << "; DATA: " << serializer.GetBuffer();
+			LOG(VERBOSE) << "BAD METRIC: " << metric_name << "; DATA: " << serializer.GetBuffer();
 			return false;
 		}
 
 		if (Features::_LogMetrics.GetState())
-			LOG(INFO) << "METRIC: " << metric_name << "; DATA: " << serializer.GetBuffer();
+			LOG(VERBOSE) << "METRIC: " << metric_name << "; DATA: " << serializer.GetBuffer();
 
 		if (Features::_BlockAllTelemetry.GetState())
 		{

@@ -1,5 +1,5 @@
 #include "core/frontend/Notifications.hpp"
-#include "game/commands/PlayerCommand.hpp"
+#include "game/frontend/submenus/commands/PlayerCommand.hpp"
 #include "game/pointers/Pointers.hpp"
 #include "game/backend/Players.hpp"
 #include "game/backend/Self.hpp"

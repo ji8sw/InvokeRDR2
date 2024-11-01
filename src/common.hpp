@@ -26,6 +26,8 @@
 using namespace al;
 #include "core/logger/LogHelper.hpp"
 
+#define BRAND "Invoke"
+
 #undef Yield
 
 namespace YimMenu

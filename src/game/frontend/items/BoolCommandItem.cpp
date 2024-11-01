@@ -16,6 +16,7 @@ namespace YimMenu
 	{
 		if (!m_Command)
 		{
+			
 			ImGui::Text("Unknown!");
 			return;
 		}
@@ -24,19 +25,18 @@ namespace YimMenu
 		if (ImGui::Toggle(m_LabelOverride.has_value() ? m_LabelOverride.value().data() : m_Command->GetLabel().data(), &enabled))
 			m_Command->SetState(enabled);
 
-		// TODO: refactor this
-
-		auto windowLabel = std::format("{} Hotkey", m_Command->GetLabel());
+		auto WindowLabel = std::format("{} Hotkey", m_Command->GetLabel());
+		auto WindowLabelData = WindowLabel.data();
 
 		if (ImGui::IsItemHovered())
 		{
 			ImGui::SetTooltip(m_Command->GetDescription().data());
 			if (GetAsyncKeyState(VK_OEM_3) & 0x8000)
-				ImGui::OpenPopup(std::format("{} Hotkey", m_Command->GetLabel()).data());
+				ImGui::OpenPopup(WindowLabelData);
 		}
 
 		ImGui::SetNextWindowSize(ImVec2(500, 120));
-		if (ImGui::BeginPopupModal(windowLabel.data(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar))
+		if (ImGui::BeginPopupModal(WindowLabelData, nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar))
 		{
 			ImGui::BulletText("Hover over the command name to change its hotkey");
 			ImGui::BulletText("Press any registered key to remove");
@@ -44,7 +44,6 @@ namespace YimMenu
 
 			HotkeySetter(m_Command->GetHash()).Draw();
 
-			
 			ImGui::Spacing();
 			if (ImGui::Button("Close") || ((!ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered()) && ImGui::IsMouseClicked(ImGuiMouseButton_Left)))
 				ImGui::CloseCurrentPopup();

@@ -14,7 +14,7 @@
 #include "util/Rewards.hpp"
 
 #include <map>
-
+#include "game/rdr/data/WeaponTypes.hpp"
 
 namespace YimMenu::Features
 {
@@ -120,6 +120,34 @@ namespace YimMenu::Submenus
 			});
 		}
 	}
+	
+	static int WeapInputCallback(ImGuiInputTextCallbackData* data)
+	{
+		if (data->EventFlag == ImGuiInputTextFlags_CallbackCompletion)
+		{
+			std::string NewText{};
+			std::string InputLower = data->Buf;
+			std::transform(InputLower.begin(), InputLower.end(), InputLower.begin(), ::tolower);
+			for (const auto& WeaponModel : Data::g_WeaponTypes)
+			{
+				std::string ModelLower = WeaponModel;
+				std::transform(ModelLower.begin(), ModelLower.end(), ModelLower.begin(), ::tolower);
+				if (ModelLower.find(InputLower) != std::string::npos)
+				{
+					NewText = WeaponModel;
+				}
+			}
+
+			if (!NewText.empty())
+			{
+				data->DeleteChars(0, data->BufTextLen);
+				data->InsertChars(0, NewText.c_str());
+			}
+
+			return 1;
+		}
+		return 0;
+	}
 
 	Self::Self() :
 	    Submenu::Submenu("Self")
@@ -150,6 +178,8 @@ namespace YimMenu::Submenus
 		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("drunk"_J));
 		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("superpunch"_J));
 		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("quickskin"_J));
+		LOG(INFO) << "adding clumsy";
+		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("clumsy"_J));
 
 		toolsGroup->AddItem(std::make_shared<CommandItem>("suicide"_J));
 		toolsGroup->AddItem(std::make_shared<CommandItem>("clearcrimes"_J));
@@ -194,6 +224,44 @@ namespace YimMenu::Submenus
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("autocock"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("keepgunsclean"_J));
 
+		static std::string WeaponNameBuffer;
+		InputTextWithHint("##weapmodel", "Weapon Model", &WeaponNameBuffer, ImGuiInputTextFlags_CallbackCompletion, nullptr, WeapInputCallback)
+		    .Draw();
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Press Tab to auto fill");
+
+		if (!WeaponNameBuffer.empty() && !Data::IsWeapModelInList(WeaponNameBuffer))
+		{
+			ImGui::BeginListBox("##weapmodels", ImVec2(250, 100));
+
+			std::string BufferLower = WeaponNameBuffer;
+			std::transform(BufferLower.begin(), BufferLower.end(), BufferLower.begin(), ::tolower);
+			for (const auto& WeaponModel : Data::g_WeaponTypes)
+			{
+				std::string WeaponModelLower = WeaponModel;
+				std::transform(WeaponModelLower.begin(), WeaponModelLower.end(), WeaponModelLower.begin(), ::tolower);
+				if (WeaponModelLower.find(BufferLower) != std::string::npos && ImGui::Selectable(WeaponModel.c_str()))
+				{
+					WeaponNameBuffer = WeaponModel;
+				}
+			}
+
+			ImGui::EndListBox();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Add"))
+		{
+			FiberPool::Push([=] {
+				YimMenu::Ped Self = YimMenu::Self::GetPed();
+				if (Self && Self.IsValid())
+				{
+					WEAPON::SET_CURRENT_PED_WEAPON(Self.GetHandle(), Joaat(WeaponNameBuffer), true, Data::eWeaponAttachPoint::HAND_PRIMARY, 0, 0);
+				}
+			});
+		}
+
 		weapons->AddItem(weaponsGlobalsGroup);
 		AddCategory(std::move(weapons));
 
@@ -209,6 +277,15 @@ namespace YimMenu::Submenus
 		horseGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("keephorseagitationlow"_J));
 		horseGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("flaminghooves"_J));
 		horseGlobalsGroup->AddItem(std::make_shared<CommandItem>("tpmounttoself"_J));
+		horseGlobalsGroup->AddItem(std::make_shared<ImGuiItem>([] {
+			if (ImGui::Button("Max Bonding"))
+			{
+				FiberPool::Push([] {
+					if (YimMenu::Players::GetSelected().GetPed())
+						YimMenu::Players::GetSelected().GetPed().SetBondingLevel(100);
+				});
+			}
+		}));
 		static float horseScale = 1;
 		horseGlobalsGroup->AddItem(std::make_shared<ImGuiItem>([] {
 			ImGui::Text("Horse Scale");

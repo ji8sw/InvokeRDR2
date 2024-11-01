@@ -59,7 +59,7 @@ namespace YimMenu
 
 			if (found)
 			{
-				LOG(INFO) << "Found pattern [" << pattern->Name() << "] : [" << HEX(i) << "]";
+				//LOG(INFO) << "Found pattern [" << pattern->Name() << "] : [" << HEX(i) << "]";
 
 				std::invoke(func, i);
 

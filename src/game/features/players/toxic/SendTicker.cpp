@@ -1,6 +1,6 @@
 #include "game/backend/Self.hpp"
 #include "game/backend/Players.hpp"
-#include "game/commands/PlayerCommand.hpp"
+#include "game/frontend/submenus/commands/PlayerCommand.hpp"
 #include "core/commands/ListCommand.hpp"
 #include "core/commands/BoolCommand.hpp"
 #include "game/rdr/Enums.hpp"

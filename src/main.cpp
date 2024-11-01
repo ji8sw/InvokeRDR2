@@ -14,16 +14,17 @@
 #include "game/features/Features.hpp"
 #include "game/frontend/GUI.hpp"
 #include "game/pointers/Pointers.hpp"
+#include "AsyncLogger/Logger.hpp"
 
 
 namespace YimMenu
 {
 	DWORD Main(void*)
 	{
-		const auto documents = std::filesystem::path(std::getenv("appdata")) / "HorseMenu";
+		const auto documents = std::filesystem::path(std::getenv("appdata")) / BRAND;
 		FileMgr::Init(documents);
 
-		LogHelper::Init("HorseMenu", FileMgr::GetProjectFile("./cout.log"));
+		LogHelper::Init(BRAND, FileMgr::GetProjectFile("./cout.log"));
 
 		g_HotkeySystem.RegisterCommands();
 		SavedLocations::FetchSavedLocations();
@@ -52,7 +53,7 @@ namespace YimMenu
 		ScriptMgr::AddScript(std::make_unique<Script>(&BlockControlsForUI));
 		ScriptMgr::AddScript(std::make_unique<Script>(&ContextMenuTick));
 
-		Notifications::Show("HorseMenu", "Loaded succesfully", NotificationType::Success);
+		Notifications::Show(BRAND, "Loaded succesfully", NotificationType::Success);
 
 #ifndef NDEBUG
 		LOG(WARNING) << "Debug Build. Switch to RelWithDebInfo or Release build configurations to have a more stable experience.";

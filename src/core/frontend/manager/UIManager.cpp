@@ -1,4 +1,7 @@
 #include "UIManager.hpp"
+#include "game/backend/ScriptMgr.hpp"
+#include "game/backend/FiberPool.hpp"
+#include "core/commands/Commands.hpp"
 
 namespace YimMenu
 {
@@ -19,7 +22,7 @@ namespace YimMenu
 	{
 		auto pos = ImGui::GetCursorPos();
 
-		if (ImGui::BeginChild("##submenus", ImVec2(120, ImGui::GetContentRegionAvail().y - 20), true))
+		if (ImGui::BeginChild("##submenus", ImVec2(120, ImGui::GetContentRegionAvail().y - 30), true))
 		{
 			for (auto& submenu : m_Submenus)
 			{
@@ -31,7 +34,20 @@ namespace YimMenu
 		}
 		ImGui::EndChild();
 		
-		ImGui::Text("HorseMenu");
+		if (ImGui::Button("Unload", ImVec2(120, 0)))
+		{
+			if (ScriptMgr::CanTick())
+			{
+				FiberPool::Push([] {
+					Commands::Shutdown();
+					g_Running = false;
+				});
+			}
+			else
+			{
+				g_Running = false;
+			}
+		}
 
 		pos.y -= 28;
 		ImGui::SetCursorPos(ImVec2(pos.x + 130, pos.y));

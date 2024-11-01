@@ -31,7 +31,11 @@ namespace YimMenu
 		void SetMotivation(MotivationState state, float value);
 
 		// mount
+		bool IsMount();
 		void SetInMount(Ped mount, int seat = -1);
+		bool KickFromMount();
+		bool SetBondingLevel(int Level);
+		bool GetRiderOfMount(int& RiderHandle);
 
 		// bones
 		rage::fvector3 GetBonePosition(int bone);

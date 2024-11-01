@@ -13,6 +13,8 @@
 #include "Player/Toxic.hpp"
 #include "Player/Trolling.hpp"
 
+#include "game/backend/Self.hpp"
+
 namespace YimMenu::Submenus
 {
 	struct Tag
@@ -31,11 +33,24 @@ namespace YimMenu::Submenus
 		if (player.IsModder())
 			tags.push_back({"MOD", ImGui::Colors::DeepPink});
 
-		if (player.GetPed() && player.GetPed().IsInvincible())
-			tags.push_back({"GOD", ImGui::Colors::Crimson});
+		Ped PlayerPed = player.GetPed();
+		if (PlayerPed)
+		{
+			if (PlayerPed.IsInvincible())
+				tags.push_back({"GOD", ImGui::Colors::Crimson});
 
-		if (player.GetPed() && !player.GetPed().IsVisible())
-			tags.push_back({"INVIS", ImGui::Colors::MediumPurple});
+			if (!PlayerPed.IsVisible())
+				tags.push_back({"INVIS", ImGui::Colors::MediumPurple});
+
+			if (PlayerPed == Self::GetPed())
+				tags.push_back({"ME", ImGui::Colors::White});
+
+			if (PlayerPed.IsDead())
+				tags.push_back({"DEAD", ImGui::Colors::Red});
+
+			if (PlayerPed.IsEnemy())
+				tags.push_back({"ENEMY", ImGui::Colors::Red});
+		}
 
 		return tags;
 	}

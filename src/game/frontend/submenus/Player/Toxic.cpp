@@ -13,6 +13,9 @@ namespace YimMenu::Submenus
 		general->AddItem(std::make_shared<PlayerCommandItem>("defensive"_J));
 		general->AddItem(std::make_shared<PlayerCommandItem>("offensive"_J));
 		general->AddItem(std::make_shared<PlayerCommandItem>("remotebolas"_J));
+		general->AddItem(std::make_shared<PlayerCommandItem>("setwantedscoremax"_J));
+		general->AddItem(std::make_shared<PlayerCommandItem>("setwantedscoremin"_J));
+		general->AddItem(std::make_shared<PlayerCommandItem>("slipover"_J));
 
 		auto events = std::make_shared<Group>("Events");
 		events->AddItem(std::make_shared<PlayerCommandItem>("maxhonor"_J));

@@ -1,8 +1,9 @@
 #pragma once
+#include <string>
 
 namespace YimMenu::Data
 {
-	const char* g_WeaponTypes[] = {
+	static std::string g_WeaponTypes[] = {
 		"WEAPON_BOW",
 		"WEAPON_BOW_IMPROVED",
 		"WEAPON_FISHINGROD",
@@ -97,5 +98,53 @@ namespace YimMenu::Data
 		"WEAPON_THROWN_TOMAHAWK_ANCIENT",
 		"WEAPON_THROWN_TOMAHAWK_MELEEONLY",
 		"WEAPON_UNARMED"
+	};
+
+	static bool IsWeapModelInList(std::string Model)
+	{
+		for (const auto& WeaponModel : Data::g_WeaponTypes)
+		{
+			if (WeaponModel == Model)
+				return true;
+		}
+
+		return false;
+	}
+
+	enum eWeaponAttachPoint
+	{
+		INVALID          = -1,
+		HAND_PRIMARY     = 0,
+		HAND_SECONDARY   = 1,
+		PISTOL_R         = 2,
+		MAX_HAND_WEAPON_ATTACH_POINTS        = 2,
+		PISTOL_L         = 3,
+		KNIFE            = 4,
+		LASSO            = 5,
+		THROWER          = 6,
+		BOW              = 7,
+		BOW_ALTERNATE    = 8,
+		RIFLE            = 9,
+		RIFLE_ALTERNATE  = 10,
+		LANTERN          = 11,
+		TEMP_LANTERN     = 12,
+		MELEE            = 13,
+		MAX_SYNCED_WEAPON_ATTACH_POINTS      = 13,
+		HIP              = 14,
+		BOOT             = 15,
+		BACK             = 16,
+		FRONT            = 17,
+		SHOULDERSLING    = 18,
+		LEFTBREAST       = 19,
+		RIGHTBREAST      = 20,
+		LEFTARMPIT       = 21,
+		RIGHTARMPIT      = 22,
+		LEFTARMPIT_RIFLE = 23,
+		SATCHEL          = 24,
+		LEFTARMPIT_BOW   = 25,
+		RIGHT_HAND_EXTRA = 26,
+		LEFT_HAND_EXTRA  = 27,
+		RIGHT_HAND_AUX   = 28,
+		MAX_WEAPON_ATTACH_POINTS             = 29
 	};
 }

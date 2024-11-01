@@ -1,5 +1,5 @@
 #include "core/frontend/Notifications.hpp"
-#include "game/commands/PlayerCommand.hpp"
+#include "game/frontend/submenus/commands/PlayerCommand.hpp"
 #include "game/rdr/Enums.hpp"
 #include "game/rdr/Natives.hpp"
 #include "game/rdr/Ped.hpp"

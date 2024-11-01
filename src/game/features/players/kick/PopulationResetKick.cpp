@@ -1,4 +1,4 @@
-#include "game/commands/PlayerCommand.hpp"
+#include "game/frontend/submenus/commands/PlayerCommand.hpp"
 #include "game/rdr/Packet.hpp"
 #include "game/pointers/Pointers.hpp"
 #include "core/frontend/Notifications.hpp"

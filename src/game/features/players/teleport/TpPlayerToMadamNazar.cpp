@@ -1,4 +1,4 @@
-#include "game/commands/PlayerCommand.hpp"
+#include "game/frontend/submenus/commands/PlayerCommand.hpp"
 #include "core/frontend/Notifications.hpp"
 #include "game/backend/Self.hpp"
 #include "game/rdr/Natives.hpp"

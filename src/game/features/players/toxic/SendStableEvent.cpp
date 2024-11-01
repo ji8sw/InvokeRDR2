@@ -2,7 +2,7 @@
 #include "core/commands/ListCommand.hpp"
 #include "game/backend/Players.hpp"
 #include "game/backend/Self.hpp"
-#include "game/commands/PlayerCommand.hpp"
+#include "game/frontend/submenus/commands/PlayerCommand.hpp"
 #include "game/rdr/Enums.hpp"
 #include "game/rdr/Natives.hpp"
 #include "game/rdr/Scripts.hpp"

@@ -1,6 +1,6 @@
 #include "core/frontend/Notifications.hpp"
 #include "game/backend/ScriptMgr.hpp"
-#include "game/commands/PlayerCommand.hpp"
+#include "game/frontend/submenus/commands/PlayerCommand.hpp"
 #include "game/rdr/Natives.hpp"
 #include "util/Rewards.hpp"
 
